@@ -1,78 +1,70 @@
 'use client'
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-function IDCard() {
-  const cardRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const card = cardRef.current; if(!card) return
-    const onMove=(e:MouseEvent)=>{const r=card.getBoundingClientRect();const dx=(e.clientX-r.left-r.width/2)/r.width*2;const dy=(e.clientY-r.top-r.height/2)/r.height*2;card.style.transform='perspective(1000px) rotateY('+dx*14+'deg) rotateX('+(-dy*10)+'deg) scale(1.02)'}
-    const onLeave=()=>{card.style.transition='transform .6s ease';card.style.transform='perspective(1000px) rotateY(0) rotateX(0) scale(1)'}
-    const onEnter=()=>{card.style.transition='transform .08s'}
-    card.addEventListener('mousemove',onMove);card.addEventListener('mouseleave',onLeave);card.addEventListener('mouseenter',onEnter)
-    return()=>{card.removeEventListener('mousemove',onMove);card.removeEventListener('mouseleave',onLeave);card.removeEventListener('mouseenter',onEnter)}
-  },[])
-  const fields=[{l:'Status',v:'Research Associate',c:'var(--violet)'},{l:'Location',v:'Birmingham, UK',c:'var(--text)'},{l:'Education',v:'MSc Robotics · UoB',c:'var(--cyan)'},{l:'Speciality',v:'ROS 2 · SLAM · CV',c:'var(--text)'},{l:'Projects',v:'6+ Completed',c:'var(--violet)'}]
-  return (
-    <div style={{display:'flex',justifyContent:'center'}}>
-      <div ref={cardRef} style={{position:'relative',width:'min(340px,90vw)',height:500,borderRadius:24,overflow:'hidden',background:'linear-gradient(135deg,#0F0B2A,#1A0A3B,#0A1628)',boxShadow:'0 40px 80px rgba(139,92,246,0.2)'}}>
-        <div className="animate-scan" style={{background:'linear-gradient(90deg,transparent,rgba(6,182,212,0.6),transparent)',zIndex:20}}/>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'24px 24px 18px',borderBottom:'1px solid rgba(255,255,255,0.05)'}}>
-          <span style={{fontFamily:'monospace',fontWeight:700,fontSize:13,letterSpacing:3,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>KR·ID</span>
-          <span style={{fontFamily:'monospace',fontSize:9,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)'}}>Research // Engineer</span>
-        </div>
-        <div style={{display:'flex',gap:16,alignItems:'flex-start',padding:'24px 24px 0'}}>
-          <img src="/assets/images/profile.jpg" alt="Krithik Raj" style={{width:80,height:80,borderRadius:14,objectFit:'cover',objectPosition:'center top',border:'2px solid rgba(139,92,246,0.5)',flexShrink:0}}/>
-          <div>
-            <h3 style={{fontSize:17,fontWeight:700,marginBottom:4,fontFamily:'Orbitron,sans-serif',color:'white'}}>Krithik Raj</h3>
-            <p style={{fontFamily:'monospace',fontSize:10,color:'var(--cyan)',letterSpacing:1,marginBottom:10}}>ROBOTICS_ENG.v2</p>
-            <span style={{fontSize:9,letterSpacing:2,textTransform:'uppercase',padding:'4px 10px',borderRadius:100,background:'rgba(163,230,53,0.1)',border:'1px solid rgba(163,230,53,0.3)',color:'var(--lime)'}}>● AVAILABLE</span>
-          </div>
-        </div>
-        <div style={{margin:'20px 24px 0',height:1,background:'rgba(255,255,255,0.05)'}}/>
-        <div style={{padding:'16px 24px',display:'flex',flexDirection:'column',gap:12}}>
-          {fields.map(({l,v,c})=>(
-            <div key={l} style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-              <span style={{fontFamily:'monospace',fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)'}}>{l}</span>
-              <span style={{fontSize:12,fontWeight:700,color:c}}>{v}</span>
-            </div>
-          ))}
-        </div>
-        <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',borderTop:'1px solid rgba(255,255,255,0.05)'}}>
-          <div style={{display:'flex',alignItems:'flex-end',gap:2,height:28}}>
-            {[60,100,40,80,55,100,35,75,50,90,45,70].map((h,i)=>(
-              <span key={i} className="animate-blink" style={{width:2,height:h+'%',background:'rgba(139,92,246,0.5)',borderRadius:2,display:'block',animationDelay:i*0.1+'s'}}/>
-            ))}
-          </div>
-          <span style={{fontFamily:'monospace',fontSize:9,letterSpacing:2,color:'var(--muted)'}}>ID·2025·NCNR·001</span>
-        </div>
-      </div>
-    </div>
-  )
-}
 export default function About() {
-  const ref=useRef(null)
-  const inView=useInView(ref,{once:true,margin:'-100px'})
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-80px' })
+  const iv = (d=0) => ({ hidden:{opacity:0,x:-30}, show:{opacity:1,x:0,transition:{duration:.8,delay:d}} })
+  const ivR = (d=0) => ({ hidden:{opacity:0,x:30}, show:{opacity:1,x:0,transition:{duration:.8,delay:d}} })
   return(
-    <section id="about" className="section-pad" style={{padding:'120px 0',position:'relative',overflow:'hidden',background:'var(--bg2)',transition:'background .4s'}}>
-      <div ref={ref} className="two-col" style={{maxWidth:1100,margin:'0 auto',padding:'0 clamp(20px,5vw,64px)',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'clamp(40px,6vw,96px)',alignItems:'center'}}>
-        <motion.div initial={{opacity:0,x:-40}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.9}}>
-          <span className="section-label">// Who I Am</span>
-          <h2 className="section-title" style={{marginBottom:28}}>Engineer &<br/><span className="grad-text">Innovator</span></h2>
-          <div style={{color:'var(--muted)',lineHeight:1.9,fontSize:'clamp(14px,2vw,16px)',display:'flex',flexDirection:'column',gap:14}}>
-            <p>Robotics engineer with a background in <strong style={{color:'var(--text)'}}>mechanical engineering</strong>, specialising in autonomous systems and intelligent perception.</p>
-            <p>Currently a <strong style={{color:'var(--text)'}}>Research Associate</strong> at the Extreme Robotics Laboratory (NCNR), bridging theory and real-world autonomous applications.</p>
-            <p>Interests: <strong style={{color:'var(--text)'}}>ROS 2, SLAM, Computer Vision, Autonomous Mobile Robots</strong>.</p>
+    <section id="about" ref={ref} className="sec" style={{background:'linear-gradient(135deg,rgba(185,131,255,0.03),rgba(0,198,255,0.03))',transition:'background .4s'}}>
+      <motion.div initial="hidden" animate={inView?'show':undefined}>
+        <motion.p variants={iv()} style={{textAlign:'center'}} className="section-label">// About Me</motion.p>
+        <motion.h2 variants={iv(.05)} className="section-title-styled">ABOUT ME</motion.h2>
+        <motion.p variants={iv(.1)} className="section-subtitle">Engineer // Problem-Solver // Innovator</motion.p>
+      </motion.div>
+
+      <div className="two-col" style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:'clamp(32px,5vw,60px)',alignItems:'start',maxWidth:1200,margin:'0 auto'}}>
+        {/* Left */}
+        <motion.div initial="hidden" animate={inView?'show':undefined} variants={iv(.1)}>
+          <div style={{display:'flex',flexDirection:'column',gap:16,color:'var(--muted)',fontSize:'clamp(13px,1.8vw,16px)',lineHeight:1.9,marginBottom:40}}>
+            <p>I am a robotics and automation engineer with a background in <strong style={{color:'var(--text)'}}>mechanical engineering</strong> and hands-on experience in autonomous systems, robotic simulation, and intelligent perception.</p>
+            <p>My work focuses on integrating software, hardware, and control systems to build reliable robotic solutions across <strong style={{color:'var(--text)'}}>ROS-based systems, computer vision, SLAM, embedded platforms</strong>, and simulation environments.</p>
+            <p>My current interests include autonomous mobile robots, robotic perception, and research-driven engineering — with a goal of contributing to advanced robotics research and industrial automation.</p>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginTop:32}}>
-            {[{n:'6+',l:'Projects'},{n:'2+',l:'Years R&D'},{n:'2',l:'Published'}].map(({n,l})=>(
-              <div key={l} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:16,textAlign:'center',transition:'background .4s'}}>
-                <div style={{fontSize:28,fontWeight:700,marginBottom:4,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontFamily:'Orbitron,sans-serif'}}>{n}</div>
-                <div style={{fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)'}}>{l}</div>
+          {/* Stats */}
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20}}>
+            {[{n:'6+',l:'Major Projects Completed'},{n:'2+',l:'Years Experience Robotics R&D'}].map(({n,l})=>(
+              <div key={l} style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:20,padding:'clamp(20px,3vw,30px)',textAlign:'center',transition:'all .3s'}}
+                onMouseEnter={e=>{const el=e.currentTarget as HTMLDivElement;el.style.transform='translateY(-5px)';el.style.boxShadow='var(--glow)'}}
+                onMouseLeave={e=>{const el=e.currentTarget as HTMLDivElement;el.style.transform='';el.style.boxShadow=''}}>
+                <div style={{fontFamily:'Orbitron,sans-serif',fontSize:'clamp(2rem,4vw,3rem)',color:'var(--violet)',marginBottom:8,fontWeight:700}}>{n}</div>
+                <p style={{fontSize:13,color:'var(--muted)',lineHeight:1.5}}>{l}</p>
               </div>
             ))}
           </div>
         </motion.div>
-        <motion.div initial={{opacity:0,x:40}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.9,delay:0.2}}><IDCard/></motion.div>
+
+        {/* Education sidebar */}
+        <motion.div className="edu-sidebar" initial="hidden" animate={inView?'show':undefined} variants={ivR(.15)}
+          style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:24,padding:'clamp(24px,3vw,36px)',position:'sticky',top:110,transition:'background .4s'}}>
+          <h3 style={{fontFamily:'Orbitron,sans-serif',fontSize:'clamp(1.2rem,2vw,1.6rem)',color:'var(--violet)',marginBottom:28,textAlign:'center'}}>Education</h3>
+          {[
+            {name:'MSc Robotics',uni:'University of Birmingham, UK',color:'var(--violet)',icon:'🎓'},
+            {name:'B.E. Mechanical Engineering',uni:'Sri Venkateswara College of Engineering (SVCE), India',color:'var(--cyan)',icon:'⚙️'},
+          ].map(({name,uni,color,icon})=>(
+            <div key={name} style={{display:'flex',alignItems:'flex-start',gap:16,marginBottom:24,padding:16,background:'rgba(255,255,255,0.02)',borderRadius:16,transition:'all .3s',cursor:'default'}}
+              onMouseEnter={e=>{const el=e.currentTarget as HTMLDivElement;el.style.background='rgba(255,255,255,0.05)';el.style.transform='translateX(5px)'}}
+              onMouseLeave={e=>{const el=e.currentTarget as HTMLDivElement;el.style.background='rgba(255,255,255,0.02)';el.style.transform=''}}>
+              <span style={{fontSize:32,flexShrink:0}}>{icon}</span>
+              <div>
+                <h4 style={{fontSize:'clamp(13px,1.6vw,15px)',color:'var(--text)',marginBottom:5,fontWeight:700}}>{name}</h4>
+                <p style={{fontSize:12,color:'var(--muted)',lineHeight:1.5}}>{uni}</p>
+              </div>
+            </div>
+          ))}
+          {/* Contact quick links */}
+          <div style={{borderTop:'1px solid var(--border)',paddingTop:20,marginTop:8,display:'flex',flexDirection:'column',gap:10}}>
+            {[{l:'📧 Email',h:'mailto:krithikraj@email.com'},{l:'💼 LinkedIn',h:'https://linkedin.com/in/krithikraj'},{l:'🐙 GitHub',h:'https://github.com/KrithikRajofficial'}].map(({l,h})=>(
+              <a key={l} href={h} target={h.startsWith('http')?'_blank':undefined} rel="noreferrer"
+                style={{fontSize:12,color:'var(--muted)',textDecoration:'none',transition:'color .2s'}}
+                onMouseEnter={e=>{(e.target as HTMLAnchorElement).style.color='var(--violet)'}}
+                onMouseLeave={e=>{(e.target as HTMLAnchorElement).style.color='var(--muted)'}}>
+                {l}
+              </a>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   )
