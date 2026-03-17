@@ -2,7 +2,7 @@
 import { useRef, useMemo } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-const N = 2500
+const N = 2000
 function ParticleSphere() {
   const meshRef = useRef<THREE.Points>(null!)
   const clock = useRef(0)
@@ -43,5 +43,5 @@ function ParticleSphere() {
   return(<points ref={meshRef} geometry={geometry}><pointsMaterial size={0.028} vertexColors transparent opacity={0.85} blending={THREE.AdditiveBlending} depthWrite={false} sizeAttenuation/></points>)
 }
 export default function SphereScene(){
-  return(<Canvas camera={{position:[0,0,5],fov:60}} style={{position:'absolute',inset:0}} gl={{antialias:true,alpha:true}} dpr={[1,2]}><ParticleSphere/></Canvas>)
+  return(<Canvas camera={{position:[0,0,5],fov:60}} style={{position:'absolute',inset:0}} gl={{antialias:true,alpha:true}} dpr={[1,1.5]}><ParticleSphere/></Canvas>)
 }

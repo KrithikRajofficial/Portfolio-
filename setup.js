@@ -7,48 +7,82 @@ function write(filePath, content) {
   console.log('wrote: ' + filePath)
 }
 
-write('app/layout.tsx', [
-"import type { Metadata } from 'next'",
-"import './globals.css'",
-"export const metadata: Metadata = { title: 'Krithik Raj | Robotics Engineer', description: 'Research Associate at Extreme Robotics Laboratory. ROS 2, SLAM, Computer Vision.' }",
-"export default function RootLayout({ children }: { children: React.ReactNode }) {",
-"  return (<html lang='en' suppressHydrationWarning><body suppressHydrationWarning>{children}</body></html>)",
-"}"
-].join('\n'))
+// ── layout ──────────────────────────────────────────────────────────────────
+write('app/layout.tsx', `import type { Metadata } from 'next'
+import './globals.css'
+export const metadata: Metadata = { title: 'Krithik Raj | Robotics Engineer', description: 'Research Associate at Extreme Robotics Laboratory. ROS 2, SLAM, Computer Vision.' }
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (<html lang='en' suppressHydrationWarning><body suppressHydrationWarning>{children}</body></html>)
+}
+`)
 
-write('app/globals.css', [
-"@tailwind base;",
-"@tailwind components;",
-"@tailwind utilities;",
-"@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap');",
-":root{--bg:#04060F;--bg2:#070B18;--violet:#8B5CF6;--cyan:#06B6D4;--lime:#A3E635;--text:#F1F5F9;--muted:#64748B;--border:rgba(139,92,246,0.2);--surface:rgba(255,255,255,0.03);}",
-"*{margin:0;padding:0;box-sizing:border-box;}",
-"html{scroll-behavior:smooth;overflow-x:hidden;}",
-"body{background:var(--bg);color:var(--text);font-family:sans-serif;overflow-x:hidden;cursor:none;}",
-"::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--violet);}",
-"::selection{background:rgba(139,92,246,0.3);color:white;}",
-".grad-text{background:linear-gradient(135deg,var(--violet),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}",
-".section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:14px;}",
-".section-title{font-family:'Orbitron',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:700;line-height:1.05;}",
-".card{background:var(--surface);border:1px solid var(--border);border-radius:16px;transition:border-color .3s,transform .3s;}",
-".btn-primary{padding:13px 32px;background:linear-gradient(135deg,var(--violet),var(--cyan));border:none;border-radius:8px;color:white;font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:inline-block;text-decoration:none;transition:opacity .3s,transform .3s;}",
-".btn-ghost{padding:13px 32px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.4);border-radius:8px;color:var(--violet);font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s;}",
-".noise{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.025;}",
-".grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(139,92,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,0.03) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}",
-"@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}",
-"@keyframes scanMove{0%{top:0%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}",
-".animate-blink{animation:blink 1.5s ease infinite;}",
-".animate-scan{animation:scanMove 3s ease-in-out infinite;position:absolute;left:0;right:0;height:2px;}"
-].join('\n'))
+// ── globals.css ──────────────────────────────────────────────────────────────
+write('app/globals.css', `@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
-write('lib/utils.ts', `
-export const PROJECTS = [
+/* ── DARK MODE (default) ── */
+:root{
+  --bg:#04060F;--bg2:#070B18;--violet:#8B5CF6;--cyan:#06B6D4;--lime:#A3E635;
+  --text:#F1F5F9;--muted:#64748B;--border:rgba(139,92,246,0.2);
+  --surface:rgba(255,255,255,0.03);--card-bg:rgba(255,255,255,0.03);
+  --nav-bg:rgba(4,6,15,0.85);
+}
+/* ── LIGHT MODE ── */
+[data-theme='light']{
+  --bg:#F8F6FF;--bg2:#EEF0FF;--violet:#7C3AED;--cyan:#0891B2;--lime:#65A30D;
+  --text:#0F0A1E;--muted:#6B7280;--border:rgba(124,58,237,0.2);
+  --surface:rgba(124,58,237,0.04);--card-bg:rgba(255,255,255,0.8);
+  --nav-bg:rgba(248,246,255,0.9);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{background:var(--bg);color:var(--text);font-family:sans-serif;overflow-x:hidden;cursor:none;transition:background .4s,color .4s;}
+@media(max-width:768px){body{cursor:auto;}}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--violet);}
+::selection{background:rgba(139,92,246,0.3);color:white;}
+.grad-text{background:linear-gradient(135deg,var(--violet),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--cyan);display:block;margin-bottom:14px;}
+.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(32px,5vw,64px);font-weight:700;line-height:1.05;}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;transition:border-color .3s,transform .3s,background .4s;}
+.btn-primary{padding:13px 32px;background:linear-gradient(135deg,var(--violet),var(--cyan));border:none;border-radius:8px;color:white;font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:inline-block;text-decoration:none;transition:opacity .3s,transform .3s;}
+.btn-ghost{padding:13px 32px;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.4);border-radius:8px;color:var(--violet);font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-block;transition:all .3s;}
+.noise{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.025;}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;opacity:0.4;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+@keyframes scanMove{0%{top:0%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+.animate-blink{animation:blink 1.5s ease infinite;}
+.animate-scan{animation:scanMove 3s ease-in-out infinite;position:absolute;left:0;right:0;height:2px;}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .desktop-only{display:none!important;}
+  .section-pad{padding:80px 20px!important;}
+  .hero-grid{grid-template-columns:1fr!important;text-align:center;}
+  .hero-btns{justify-content:center!important;}
+  .hero-stats{justify-content:center!important;}
+  .two-col{grid-template-columns:1fr!important;}
+  .skills-grid{grid-template-columns:repeat(3,1fr)!important;}
+  .nav-links{display:none!important;}
+  .mobile-menu-btn{display:flex!important;}
+}
+@media(min-width:769px){
+  .mobile-menu-btn{display:none!important;}
+  .mobile-menu{display:none!important;}
+}
+`)
+
+// ── utils.ts ─────────────────────────────────────────────────────────────────
+write('lib/utils.ts', `export const PROJECTS = [
   { id:'01', title:'Autonomous Drone + AI Object Detection', desc:'Real-time object detection with YOLOv5 integrated with Pixhawk for fully autonomous navigation, target locking and tracking.', tags:['YOLOv5','Python','Pixhawk','DroneKit'], domain:'Autonomous UAV', year:'2024', color:'0,212,255', link:'https://github.com/KrithikRajofficial' },
   { id:'02', title:'Multi-Agent Quadrotor Formation Framework', desc:'PID stabilization with MQTT communication enabling coordinated multi-agent flight with vision-based hazard detection.', tags:['PID','MQTT','Webots','YOLO'], domain:'Multi-Agent Systems', year:'2025', color:'139,92,246', link:'https://github.com/KrithikRajofficial' },
   { id:'03', title:'Precision Motorized X-Y Stage Assembly', desc:'Robotic work cell design using RoboDK with full motion planning and collision avoidance inside Factory-in-a-Box.', tags:['RoboDK','Python','CAD','Automation'], domain:'Industrial Automation', year:'2025', color:'163,230,53', link:'https://github.com/KrithikRajofficial' },
   { id:'04', title:'Autonomous E-Bike System', desc:'Smart electric bike with motor control, sensor fusion and autonomous safety features using Arduino and custom CAD.', tags:['Arduino','CAD','Motor Control','Embedded'], domain:'Embedded Systems', year:'2023', color:'6,182,212', link:'https://github.com/KrithikRajofficial' },
   { id:'05', title:'Webots Robot Simulation', desc:'Autonomous navigation with LiDAR, camera sensor integration and behaviour trees in ROS 2 and Webots.', tags:['ROS 2','Webots','Python','SLAM'], domain:'Simulation', year:'2025', color:'139,92,246', link:'https://github.com/KrithikRajofficial' },
-  { id:'06', title:'AI Pesticide Drone — Published Research', desc:'Published research on AI-based autonomous pesticide spraying combining flight path planning with computer vision.', tags:['AI','Published','AgriTech','ROS'], domain:'Research Publication', year:'2025', color:'245,158,11', link:'https://www.atlantis-press.com/proceedings/icammsd-24/126009184' },
+  { id:'06', title:'AI Pesticide Drone — Published Research', desc:'Published research on AI-based autonomous pesticide spraying combining precision flight path planning with computer vision.', tags:['AI','Published','AgriTech','ROS'], domain:'Research Publication', year:'2025', color:'245,158,11', link:'https://www.atlantis-press.com/proceedings/icammsd-24/126009184' },
 ]
 export const SKILLS = [
   {icon:'🤖',name:'ROS 2'},{icon:'🌐',name:'Gazebo'},{icon:'🦾',name:'Webots'},{icon:'🗺️',name:'SLAM'},
@@ -64,21 +98,18 @@ export const EXPERIENCE = [
 ]
 `)
 
+// ── Cursor ────────────────────────────────────────────────────────────────────
 write('components/ui/Cursor.tsx', `'use client'
 import { useEffect, useRef } from 'react'
 export default function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
+    if (window.innerWidth < 769) return
     let mx=0,my=0,rx=0,ry=0
     const move=(e:MouseEvent)=>{mx=e.clientX;my=e.clientY}
     document.addEventListener('mousemove',move)
-    const tick=()=>{
-      rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13
-      if(dotRef.current){dotRef.current.style.left=mx+'px';dotRef.current.style.top=my+'px'}
-      if(ringRef.current){ringRef.current.style.left=rx+'px';ringRef.current.style.top=ry+'px'}
-      requestAnimationFrame(tick)
-    }
+    const tick=()=>{rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;if(dotRef.current){dotRef.current.style.left=mx+'px';dotRef.current.style.top=my+'px'}if(ringRef.current){ringRef.current.style.left=rx+'px';ringRef.current.style.top=ry+'px'}requestAnimationFrame(tick)}
     tick()
     return ()=>document.removeEventListener('mousemove',move)
   },[])
@@ -89,39 +120,93 @@ export default function Cursor() {
 }
 `)
 
+// ── Navbar with theme toggle + mobile hamburger ───────────────────────────────
 write('components/ui/Navbar.tsx', `'use client'
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 const links = ['Hero','About','Projects','Skills','Experience','Contact']
-export default function Navbar() {
+export default function Navbar({ theme, toggleTheme }: { theme: string, toggleTheme: ()=>void }) {
   const [scrolled,setScrolled]=useState(false)
   const [hidden,setHidden]=useState(false)
   const [active,setActive]=useState('Hero')
   const [lastY,setLastY]=useState(0)
+  const [menuOpen,setMenuOpen]=useState(false)
   useEffect(()=>{
     const fn=()=>{
-      const y=window.scrollY;setScrolled(y>40);setHidden(y>lastY&&y>80);setLastY(y)
+      const y=window.scrollY;setScrolled(y>40);setHidden(y>lastY&&y>80&&!menuOpen);setLastY(y)
       links.forEach(id=>{const el=document.getElementById(id.toLowerCase());if(!el)return;const t=el.offsetTop-120;if(y>=t&&y<t+el.offsetHeight)setActive(id)})
     }
     window.addEventListener('scroll',fn,{passive:true});return()=>window.removeEventListener('scroll',fn)
-  },[lastY])
+  },[lastY,menuOpen])
+
+  const isDark = theme === 'dark'
+
   return(
-    <motion.nav animate={{y:hidden?'-100%':0}} transition={{duration:0.3}} style={{position:'fixed',top:0,left:0,right:0,zIndex:50,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'20px 64px',background:scrolled?'rgba(4,6,15,0.85)':'transparent',backdropFilter:scrolled?'blur(20px)':'none',borderBottom:scrolled?'1px solid var(--border)':'none',transition:'all .3s'}}>
-      <span style={{fontFamily:'Orbitron,sans-serif',fontWeight:900,fontSize:20,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>KR</span>
-      <ul style={{display:'flex',gap:40,listStyle:'none'}}>
-        {links.map(l=><li key={l}><a href={'#'+l.toLowerCase()} style={{fontSize:11,letterSpacing:3,textTransform:'uppercase',fontWeight:700,color:active===l?'var(--cyan)':'var(--muted)',textDecoration:'none',transition:'color .3s'}}>{l}</a></li>)}
-      </ul>
-      <a href="mailto:krithikraj@email.com" style={{padding:'10px 24px',background:'rgba(139,92,246,0.08)',border:'1px solid rgba(139,92,246,0.4)',borderRadius:8,color:'var(--violet)',fontSize:12,letterSpacing:2,textTransform:'uppercase',fontWeight:700,textDecoration:'none'}}>Hire Me</a>
-    </motion.nav>
+    <>
+      <motion.nav animate={{y:hidden?'-100%':0}} transition={{duration:0.3}}
+        style={{position:'fixed',top:0,left:0,right:0,zIndex:50,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 40px',background:scrolled?'var(--nav-bg)':'transparent',backdropFilter:scrolled?'blur(20px)':'none',borderBottom:scrolled?'1px solid var(--border)':'none',transition:'all .3s'}}>
+        {/* Logo */}
+        <span style={{fontFamily:'Orbitron,sans-serif',fontWeight:900,fontSize:20,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>KR</span>
+
+        {/* Desktop links */}
+        <ul className="nav-links" style={{display:'flex',gap:32,listStyle:'none'}}>
+          {links.map(l=><li key={l}><a href={'#'+l.toLowerCase()} style={{fontSize:11,letterSpacing:3,textTransform:'uppercase',fontWeight:700,color:active===l?'var(--cyan)':'var(--muted)',textDecoration:'none',transition:'color .3s'}}>{l}</a></li>)}
+        </ul>
+
+        {/* Right: theme toggle + hire me */}
+        <div style={{display:'flex',alignItems:'center',gap:12}}>
+          {/* Day/Night toggle */}
+          <button onClick={toggleTheme}
+            style={{width:44,height:44,borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',background:'var(--surface)',border:'1px solid var(--border)',cursor:'pointer',fontSize:20,transition:'all .3s'}}
+            title={isDark?'Switch to light mode':'Switch to dark mode'}>
+            {isDark ? '☀️' : '🌙'}
+          </button>
+          {/* Hire me — desktop only */}
+          <a href="mailto:krithikraj@email.com" className="desktop-only"
+            style={{padding:'10px 20px',background:'rgba(139,92,246,0.08)',border:'1px solid rgba(139,92,246,0.4)',borderRadius:8,color:'var(--violet)',fontSize:11,letterSpacing:2,textTransform:'uppercase',fontWeight:700,textDecoration:'none'}}>
+            Hire Me
+          </a>
+          {/* Mobile hamburger */}
+          <button className="mobile-menu-btn"
+            onClick={()=>setMenuOpen(p=>!p)}
+            style={{width:44,height:44,borderRadius:12,alignItems:'center',justifyContent:'center',background:'var(--surface)',border:'1px solid var(--border)',cursor:'pointer',flexDirection:'column',gap:5,padding:12}}>
+            <span style={{display:'block',width:20,height:2,background:'var(--text)',borderRadius:2,transition:'all .3s',transform:menuOpen?'rotate(45deg) translate(5px,5px)':'none'}}/>
+            <span style={{display:'block',width:20,height:2,background:'var(--text)',borderRadius:2,transition:'all .3s',opacity:menuOpen?0:1}}/>
+            <span style={{display:'block',width:20,height:2,background:'var(--text)',borderRadius:2,transition:'all .3s',transform:menuOpen?'rotate(-45deg) translate(5px,-5px)':'none'}}/>
+          </button>
+        </div>
+      </motion.nav>
+
+      {/* Mobile menu drawer */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div className="mobile-menu"
+            initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}}
+            style={{position:'fixed',top:74,left:16,right:16,zIndex:49,background:'var(--nav-bg)',backdropFilter:'blur(20px)',border:'1px solid var(--border)',borderRadius:16,padding:'20px 24px',display:'flex',flexDirection:'column',gap:4}}>
+            {links.map(l=>(
+              <a key={l} href={'#'+l.toLowerCase()} onClick={()=>setMenuOpen(false)}
+                style={{padding:'12px 16px',borderRadius:10,fontSize:13,letterSpacing:2,textTransform:'uppercase',fontWeight:700,color:active===l?'var(--cyan)':'var(--text)',textDecoration:'none',background:active===l?'rgba(6,182,212,0.08)':'transparent',transition:'all .2s'}}>
+                {l}
+              </a>
+            ))}
+            <a href="mailto:krithikraj@email.com"
+              style={{marginTop:8,padding:'12px 16px',borderRadius:10,fontSize:12,letterSpacing:2,textTransform:'uppercase',fontWeight:700,color:'white',textDecoration:'none',background:'linear-gradient(135deg,var(--violet),var(--cyan))',textAlign:'center'}}>
+              Hire Me
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 `)
 
+// ── SphereScene ───────────────────────────────────────────────────────────────
 write('components/three/SphereScene.tsx', `'use client'
 import { useRef, useMemo } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-const N = 2500
+const N = 2000
 function ParticleSphere() {
   const meshRef = useRef<THREE.Points>(null!)
   const clock = useRef(0)
@@ -162,10 +247,11 @@ function ParticleSphere() {
   return(<points ref={meshRef} geometry={geometry}><pointsMaterial size={0.028} vertexColors transparent opacity={0.85} blending={THREE.AdditiveBlending} depthWrite={false} sizeAttenuation/></points>)
 }
 export default function SphereScene(){
-  return(<Canvas camera={{position:[0,0,5],fov:60}} style={{position:'absolute',inset:0}} gl={{antialias:true,alpha:true}} dpr={[1,2]}><ParticleSphere/></Canvas>)
+  return(<Canvas camera={{position:[0,0,5],fov:60}} style={{position:'absolute',inset:0}} gl={{antialias:true,alpha:true}} dpr={[1,1.5]}><ParticleSphere/></Canvas>)
 }
 `)
 
+// ── Hero ──────────────────────────────────────────────────────────────────────
 write('components/sections/Hero.tsx', `'use client'
 import { useEffect, useRef } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
@@ -182,36 +268,35 @@ function HeroImage() {
   const onLeave=()=>{x.set(0);y.set(0)}
   return (
     <motion.div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
-      style={{rotateX,rotateY,transformStyle:'preserve-3d',perspective:1000,width:400,height:500,position:'relative',margin:'0 auto'}}>
+      style={{rotateX,rotateY,transformStyle:'preserve-3d',perspective:1000,width:'min(380px,85vw)',height:'min(460px,70vw)',position:'relative',margin:'0 auto'}}>
       <motion.div animate={{rotate:360}} transition={{duration:8,repeat:Infinity,ease:'linear'}}
         style={{position:'absolute',inset:-4,borderRadius:32,zIndex:0,background:'conic-gradient(from 0deg,#8B5CF6,#06B6D4,#A3E635,#8B5CF6)',filter:'blur(3px)'}}/>
       <motion.div animate={{rotate:-360}} transition={{duration:14,repeat:Infinity,ease:'linear'}}
         style={{position:'absolute',inset:-10,borderRadius:38,zIndex:0,opacity:0.35,background:'conic-gradient(from 180deg,transparent,#8B5CF6,transparent,#06B6D4,transparent)',filter:'blur(6px)'}}/>
       <div style={{position:'relative',width:'100%',height:'100%',borderRadius:28,overflow:'hidden',zIndex:1}}>
-        <img src="/assets/images/profile.jpg" alt="Krithik Raj"
-          style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center top'}}/>
+        <img src="/assets/images/profile.jpg" alt="Krithik Raj" style={{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center top'}}/>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(135deg,rgba(139,92,246,0.08) 0%,transparent 40%,rgba(6,182,212,0.06) 100%)',border:'1px solid rgba(139,92,246,0.35)',borderRadius:28,pointerEvents:'none'}}/>
-        <div style={{position:'absolute',bottom:0,left:0,right:0,background:'linear-gradient(to top,rgba(4,6,15,0.92) 0%,rgba(4,6,15,0.6) 60%,transparent 100%)',backdropFilter:'blur(10px)',padding:'40px 24px 24px',borderRadius:'0 0 28px 28px'}}>
+        <div style={{position:'absolute',bottom:0,left:0,right:0,background:'linear-gradient(to top,rgba(4,6,15,0.92) 0%,rgba(4,6,15,0.6) 60%,transparent 100%)',backdropFilter:'blur(10px)',padding:'32px 20px 20px',borderRadius:'0 0 28px 28px'}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
             <div>
-              <p style={{fontFamily:'Orbitron,sans-serif',fontWeight:700,fontSize:18,color:'white',marginBottom:4}}>Krithik Raj</p>
-              <p style={{fontFamily:'monospace',fontSize:11,letterSpacing:3,textTransform:'uppercase',color:'var(--cyan)'}}>Robotics Engineer</p>
+              <p style={{fontFamily:'Orbitron,sans-serif',fontWeight:700,fontSize:16,color:'white',marginBottom:3}}>Krithik Raj</p>
+              <p style={{fontFamily:'monospace',fontSize:10,letterSpacing:3,textTransform:'uppercase',color:'var(--cyan)'}}>Robotics Engineer</p>
             </div>
-            <span style={{fontSize:9,letterSpacing:2,padding:'6px 14px',borderRadius:100,background:'rgba(163,230,53,0.15)',border:'1px solid rgba(163,230,53,0.5)',color:'var(--lime)',textTransform:'uppercase',fontFamily:'monospace'}}>Available</span>
+            <span style={{fontSize:9,letterSpacing:2,padding:'5px 12px',borderRadius:100,background:'rgba(163,230,53,0.15)',border:'1px solid rgba(163,230,53,0.5)',color:'var(--lime)',textTransform:'uppercase',fontFamily:'monospace'}}>Available</span>
           </div>
         </div>
         <motion.div animate={{y:[-5,5,-5]}} transition={{duration:3,repeat:Infinity,ease:'easeInOut'}}
-          style={{position:'absolute',top:20,right:20,zIndex:10,background:'rgba(4,6,15,0.75)',backdropFilter:'blur(12px)',border:'1px solid rgba(139,92,246,0.5)',borderRadius:12,padding:'8px 14px',fontFamily:'monospace',fontSize:10,letterSpacing:2,color:'var(--violet)',textTransform:'uppercase'}}>
+          style={{position:'absolute',top:16,right:16,zIndex:10,background:'rgba(4,6,15,0.75)',backdropFilter:'blur(12px)',border:'1px solid rgba(139,92,246,0.5)',borderRadius:10,padding:'6px 12px',fontFamily:'monospace',fontSize:9,letterSpacing:2,color:'var(--violet)',textTransform:'uppercase'}}>
           NCNR Lab
         </motion.div>
         <motion.div animate={{y:[5,-5,5]}} transition={{duration:4,repeat:Infinity,ease:'easeInOut',delay:1}}
-          style={{position:'absolute',top:68,right:20,zIndex:10,background:'rgba(4,6,15,0.75)',backdropFilter:'blur(12px)',border:'1px solid rgba(6,182,212,0.5)',borderRadius:12,padding:'8px 14px',fontFamily:'monospace',fontSize:10,letterSpacing:2,color:'var(--cyan)',textTransform:'uppercase'}}>
+          style={{position:'absolute',top:56,right:16,zIndex:10,background:'rgba(4,6,15,0.75)',backdropFilter:'blur(12px)',border:'1px solid rgba(6,182,212,0.5)',borderRadius:10,padding:'6px 12px',fontFamily:'monospace',fontSize:9,letterSpacing:2,color:'var(--cyan)',textTransform:'uppercase'}}>
           UoB 2025
         </motion.div>
       </div>
       {[0,1,2,3,4,5].map((i)=>(
         <motion.div key={i} animate={{rotate:360}} transition={{duration:6+i*2,repeat:Infinity,ease:'linear'}}
-          style={{position:'absolute',top:'50%',left:'50%',width:6,height:6,borderRadius:'50%',background:i%2===0?'var(--violet)':'var(--cyan)',boxShadow:i%2===0?'0 0 10px var(--violet)':'0 0 10px var(--cyan)',transformOrigin:(210+i*12)+'px 0px',marginTop:-3,marginLeft:-3,zIndex:2}}/>
+          style={{position:'absolute',top:'50%',left:'50%',width:6,height:6,borderRadius:'50%',background:i%2===0?'var(--violet)':'var(--cyan)',boxShadow:i%2===0?'0 0 10px var(--violet)':'0 0 10px var(--cyan)',transformOrigin:(200+i*10)+'px 0px',marginTop:-3,marginLeft:-3,zIndex:2}}/>
       ))}
     </motion.div>
   )
@@ -219,45 +304,39 @@ function HeroImage() {
 export default function Hero() {
   const typedRef = useRef<HTMLSpanElement>(null)
   useEffect(() => {
-    let i=0,c=0,del=false
-    let t: ReturnType<typeof setTimeout>
-    const tick = () => {
-      const cur=roles[i]; if(!typedRef.current) return
-      if(!del){ typedRef.current.textContent=cur.slice(0,c+1); c++; if(c===cur.length){del=true;t=setTimeout(tick,2000);return} }
-      else { typedRef.current.textContent=cur.slice(0,c-1); c--; if(c===0){del=false;i=(i+1)%roles.length} }
-      t=setTimeout(tick,del?28:55)
-    }
-    t=setTimeout(tick,800); return()=>clearTimeout(t)
+    let i=0,c=0,del=false,t:ReturnType<typeof setTimeout>
+    const tick=()=>{const cur=roles[i];if(!typedRef.current)return;if(!del){typedRef.current.textContent=cur.slice(0,c+1);c++;if(c===cur.length){del=true;t=setTimeout(tick,2000);return}}else{typedRef.current.textContent=cur.slice(0,c-1);c--;if(c===0){del=false;i=(i+1)%roles.length}}t=setTimeout(tick,del?28:55)}
+    t=setTimeout(tick,800);return()=>clearTimeout(t)
   },[])
   const cv={hidden:{},show:{transition:{staggerChildren:0.15,delayChildren:0.3}}}
   const iv={hidden:{opacity:0,y:40},show:{opacity:1,y:0,transition:{duration:0.8,ease:[0.16,1,0.3,1] as any}}}
   return (
-    <section id="hero" style={{position:'relative',height:'100vh',display:'grid',gridTemplateColumns:'1fr 1fr',alignItems:'center',overflow:'hidden'}}>
+    <section id="hero" className="hero-grid" style={{position:'relative',height:'100vh',display:'grid',gridTemplateColumns:'1fr 1fr',alignItems:'center',overflow:'hidden',padding:'0 40px',gap:40}}>
       <div style={{position:'absolute',inset:0,zIndex:0}}><SphereScene /></div>
       <div style={{position:'absolute',inset:0,zIndex:1,pointerEvents:'none',background:'linear-gradient(90deg,rgba(4,6,15,0.95) 30%,rgba(4,6,15,0.5) 60%,rgba(4,6,15,0.15) 100%)'}}/>
-      <motion.div variants={cv} initial="hidden" animate="show" style={{position:'relative',zIndex:10,paddingLeft:80,paddingRight:40}}>
-        <motion.div variants={iv} style={{display:'inline-flex',alignItems:'center',gap:8,marginBottom:32}}>
-          <span style={{display:'flex',alignItems:'center',gap:8,padding:'8px 16px',borderRadius:100,fontSize:11,letterSpacing:3,textTransform:'uppercase',background:'rgba(139,92,246,0.06)',border:'1px solid rgba(139,92,246,0.2)',color:'var(--violet)'}}>
+      <motion.div variants={cv} initial="hidden" animate="show" style={{position:'relative',zIndex:10,paddingLeft:'max(40px,4vw)'}}>
+        <motion.div variants={iv} style={{display:'inline-flex',alignItems:'center',gap:8,marginBottom:24}}>
+          <span style={{display:'flex',alignItems:'center',gap:8,padding:'7px 14px',borderRadius:100,fontSize:10,letterSpacing:3,textTransform:'uppercase',background:'rgba(139,92,246,0.06)',border:'1px solid rgba(139,92,246,0.2)',color:'var(--violet)'}}>
             <span style={{width:6,height:6,borderRadius:'50%',background:'var(--lime)',animation:'blink 1.5s ease infinite'}}/>
             Seeking Roles
           </span>
         </motion.div>
-        <motion.h1 variants={iv} style={{fontFamily:'Orbitron,sans-serif',fontSize:'clamp(48px,6vw,88px)',fontWeight:900,lineHeight:1,marginBottom:24}}>
+        <motion.h1 variants={iv} style={{fontFamily:'Orbitron,sans-serif',fontSize:'clamp(40px,6vw,88px)',fontWeight:900,lineHeight:1,marginBottom:20}}>
           KRITHIK<br/>
           <span style={{background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>RAJ</span>
         </motion.h1>
-        <motion.p variants={iv} style={{fontSize:18,marginBottom:48,minHeight:32,color:'var(--muted)'}}>
+        <motion.p variants={iv} style={{fontSize:'clamp(14px,2vw,18px)',marginBottom:32,minHeight:28,color:'var(--muted)'}}>
           <span ref={typedRef}/>
-          <span style={{display:'inline-block',width:2,height:20,marginLeft:4,verticalAlign:'middle',background:'var(--cyan)',animation:'blink 1s ease infinite'}}/>
+          <span style={{display:'inline-block',width:2,height:18,marginLeft:4,verticalAlign:'middle',background:'var(--cyan)',animation:'blink 1s ease infinite'}}/>
         </motion.p>
-        <motion.div variants={iv} style={{display:'flex',gap:16,flexWrap:'wrap',marginBottom:48}}>
+        <motion.div variants={iv} className="hero-btns" style={{display:'flex',gap:12,flexWrap:'wrap',marginBottom:32}}>
           <a href="#projects" className="btn-primary">View Projects</a>
           <a href="/assets/resume/Krithik_Raj_Resume.pdf" className="btn-ghost" target="_blank" rel="noreferrer">Resume</a>
         </motion.div>
-        <motion.div variants={iv} style={{display:'flex',gap:32,paddingTop:32,borderTop:'1px solid var(--border)'}}>
+        <motion.div variants={iv} className="hero-stats" style={{display:'flex',gap:28,paddingTop:24,borderTop:'1px solid var(--border)'}}>
           {[{n:'6+',l:'Projects'},{n:'2+',l:'Years R&D'},{n:'2',l:'Published'}].map(({n,l})=>(
             <div key={l}>
-              <div style={{fontFamily:'Orbitron,sans-serif',fontSize:26,fontWeight:900,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>{n}</div>
+              <div style={{fontFamily:'Orbitron,sans-serif',fontSize:'clamp(20px,3vw,26px)',fontWeight:900,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>{n}</div>
               <div style={{fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)',marginTop:2}}>{l}</div>
             </div>
           ))}
@@ -272,6 +351,7 @@ export default function Hero() {
 }
 `)
 
+// ── About ─────────────────────────────────────────────────────────────────────
 write('components/sections/About.tsx', `'use client'
 import { useRef, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
@@ -288,36 +368,36 @@ function IDCard() {
   const fields=[{l:'Status',v:'Research Associate',c:'var(--violet)'},{l:'Location',v:'Birmingham, UK',c:'var(--text)'},{l:'Education',v:'MSc Robotics · UoB',c:'var(--cyan)'},{l:'Speciality',v:'ROS 2 · SLAM · CV',c:'var(--text)'},{l:'Projects',v:'6+ Completed',c:'var(--violet)'}]
   return (
     <div style={{display:'flex',justifyContent:'center'}}>
-      <div ref={cardRef} style={{position:'relative',width:360,height:520,borderRadius:24,overflow:'hidden',background:'linear-gradient(135deg,#0F0B2A,#1A0A3B,#0A1628)',boxShadow:'0 40px 100px rgba(139,92,246,0.2)'}}>
-        <div className="animate-scan" style={{background:'linear-gradient(90deg,transparent,rgba(6,182,212,0.6),transparent)',zIndex:20}} />
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'28px 28px 20px',borderBottom:'1px solid rgba(255,255,255,0.05)'}}>
-          <span style={{fontFamily:'monospace',fontWeight:700,fontSize:14,letterSpacing:3,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>KR·ID</span>
+      <div ref={cardRef} style={{position:'relative',width:'min(340px,90vw)',height:500,borderRadius:24,overflow:'hidden',background:'linear-gradient(135deg,#0F0B2A,#1A0A3B,#0A1628)',boxShadow:'0 40px 80px rgba(139,92,246,0.2)'}}>
+        <div className="animate-scan" style={{background:'linear-gradient(90deg,transparent,rgba(6,182,212,0.6),transparent)',zIndex:20}}/>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'24px 24px 18px',borderBottom:'1px solid rgba(255,255,255,0.05)'}}>
+          <span style={{fontFamily:'monospace',fontWeight:700,fontSize:13,letterSpacing:3,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>KR·ID</span>
           <span style={{fontFamily:'monospace',fontSize:9,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)'}}>Research // Engineer</span>
         </div>
-        <div style={{display:'flex',gap:20,alignItems:'flex-start',padding:'28px 28px 0'}}>
-          <div style={{width:88,height:88,borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',fontSize:36,background:'linear-gradient(135deg,rgba(139,92,246,0.3),rgba(6,182,212,0.3))',border:'1px solid rgba(139,92,246,0.4)'}}>🤖</div>
+        <div style={{display:'flex',gap:16,alignItems:'flex-start',padding:'24px 24px 0'}}>
+          <img src="/assets/images/profile.jpg" alt="Krithik Raj" style={{width:80,height:80,borderRadius:14,objectFit:'cover',objectPosition:'center top',border:'2px solid rgba(139,92,246,0.5)',flexShrink:0}}/>
           <div>
-            <h3 style={{fontSize:18,fontWeight:700,marginBottom:4,fontFamily:'Orbitron,sans-serif'}}>Krithik Raj</h3>
-            <p style={{fontFamily:'monospace',fontSize:11,color:'var(--cyan)',letterSpacing:1,marginBottom:10}}>ROBOTICS_ENG.v2</p>
+            <h3 style={{fontSize:17,fontWeight:700,marginBottom:4,fontFamily:'Orbitron,sans-serif',color:'white'}}>Krithik Raj</h3>
+            <p style={{fontFamily:'monospace',fontSize:10,color:'var(--cyan)',letterSpacing:1,marginBottom:10}}>ROBOTICS_ENG.v2</p>
             <span style={{fontSize:9,letterSpacing:2,textTransform:'uppercase',padding:'4px 10px',borderRadius:100,background:'rgba(163,230,53,0.1)',border:'1px solid rgba(163,230,53,0.3)',color:'var(--lime)'}}>● AVAILABLE</span>
           </div>
         </div>
-        <div style={{margin:'24px 28px 0',height:1,background:'rgba(255,255,255,0.05)'}} />
-        <div style={{padding:'20px 28px',display:'flex',flexDirection:'column',gap:14}}>
+        <div style={{margin:'20px 24px 0',height:1,background:'rgba(255,255,255,0.05)'}}/>
+        <div style={{padding:'16px 24px',display:'flex',flexDirection:'column',gap:12}}>
           {fields.map(({l,v,c})=>(
             <div key={l} style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
               <span style={{fontFamily:'monospace',fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)'}}>{l}</span>
-              <span style={{fontSize:13,fontWeight:700,color:c}}>{v}</span>
+              <span style={{fontSize:12,fontWeight:700,color:c}}>{v}</span>
             </div>
           ))}
         </div>
-        <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'16px 28px',display:'flex',alignItems:'center',justifyContent:'space-between',borderTop:'1px solid rgba(255,255,255,0.05)'}}>
-          <div style={{display:'flex',alignItems:'flex-end',gap:2,height:32}}>
+        <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',borderTop:'1px solid rgba(255,255,255,0.05)'}}>
+          <div style={{display:'flex',alignItems:'flex-end',gap:2,height:28}}>
             {[60,100,40,80,55,100,35,75,50,90,45,70].map((h,i)=>(
-              <span key={i} className="animate-blink" style={{width:2,height:h+'%',background:'rgba(139,92,246,0.5)',borderRadius:2,display:'block',animationDelay:i*0.1+'s'}} />
+              <span key={i} className="animate-blink" style={{width:2,height:h+'%',background:'rgba(139,92,246,0.5)',borderRadius:2,display:'block',animationDelay:i*0.1+'s'}}/>
             ))}
           </div>
-          <span style={{fontFamily:'monospace',fontSize:10,letterSpacing:2,color:'var(--muted)'}}>ID·2025·NCNR·001</span>
+          <span style={{fontFamily:'monospace',fontSize:9,letterSpacing:2,color:'var(--muted)'}}>ID·2025·NCNR·001</span>
         </div>
       </div>
     </div>
@@ -327,34 +407,33 @@ export default function About() {
   const ref=useRef(null)
   const inView=useInView(ref,{once:true,margin:'-100px'})
   return(
-    <section id="about" style={{padding:'144px 0',position:'relative',overflow:'hidden',background:'var(--bg2)'}}>
-      <div ref={ref} style={{maxWidth:1152,margin:'0 auto',padding:'0 64px',display:'grid',gridTemplateColumns:'1fr 1fr',gap:96,alignItems:'center'}}>
+    <section id="about" className="section-pad" style={{padding:'120px 0',position:'relative',overflow:'hidden',background:'var(--bg2)',transition:'background .4s'}}>
+      <div ref={ref} className="two-col" style={{maxWidth:1100,margin:'0 auto',padding:'0 clamp(20px,5vw,64px)',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'clamp(40px,6vw,96px)',alignItems:'center'}}>
         <motion.div initial={{opacity:0,x:-40}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.9}}>
           <span className="section-label">// Who I Am</span>
-          <h2 className="section-title" style={{marginBottom:32}}>Engineer &<br/><span className="grad-text">Innovator</span></h2>
-          <div style={{color:'var(--muted)',lineHeight:1.9,fontSize:16,display:'flex',flexDirection:'column',gap:16}}>
+          <h2 className="section-title" style={{marginBottom:28}}>Engineer &<br/><span className="grad-text">Innovator</span></h2>
+          <div style={{color:'var(--muted)',lineHeight:1.9,fontSize:'clamp(14px,2vw,16px)',display:'flex',flexDirection:'column',gap:14}}>
             <p>Robotics engineer with a background in <strong style={{color:'var(--text)'}}>mechanical engineering</strong>, specialising in autonomous systems and intelligent perception.</p>
             <p>Currently a <strong style={{color:'var(--text)'}}>Research Associate</strong> at the Extreme Robotics Laboratory (NCNR), bridging theory and real-world autonomous applications.</p>
             <p>Interests: <strong style={{color:'var(--text)'}}>ROS 2, SLAM, Computer Vision, Autonomous Mobile Robots</strong>.</p>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginTop:40}}>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginTop:32}}>
             {[{n:'6+',l:'Projects'},{n:'2+',l:'Years R&D'},{n:'2',l:'Published'}].map(({n,l})=>(
-              <div key={l} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:20,textAlign:'center'}}>
-                <div style={{fontSize:32,fontWeight:700,marginBottom:4,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontFamily:'Orbitron,sans-serif'}}>{n}</div>
-                <div style={{fontSize:11,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)'}}>{l}</div>
+              <div key={l} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:16,textAlign:'center',transition:'background .4s'}}>
+                <div style={{fontSize:28,fontWeight:700,marginBottom:4,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontFamily:'Orbitron,sans-serif'}}>{n}</div>
+                <div style={{fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)'}}>{l}</div>
               </div>
             ))}
           </div>
         </motion.div>
-        <motion.div initial={{opacity:0,x:40}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.9,delay:0.2}}>
-          <IDCard/>
-        </motion.div>
+        <motion.div initial={{opacity:0,x:40}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.9,delay:0.2}}><IDCard/></motion.div>
       </div>
     </section>
   )
 }
 `)
 
+// ── Projects ──────────────────────────────────────────────────────────────────
 write('components/sections/Projects.tsx', `'use client'
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
@@ -364,10 +443,10 @@ export default function Projects() {
   const inView=useInView(ref,{once:true,margin:'-100px'})
   const [open,setOpen]=useState<string|null>(null)
   return(
-    <section id="projects" style={{padding:'144px 0',position:'relative',background:'var(--bg)'}}>
+    <section id="projects" className="section-pad" style={{padding:'120px 0',position:'relative',background:'var(--bg)',transition:'background .4s'}}>
       <div className="grid-bg"/>
-      <div ref={ref} style={{maxWidth:1152,margin:'0 auto',padding:'0 64px'}}>
-        <motion.div initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.8}} style={{marginBottom:64}}>
+      <div ref={ref} style={{maxWidth:1100,margin:'0 auto',padding:'0 clamp(20px,5vw,64px)'}}>
+        <motion.div initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.8}} style={{marginBottom:48}}>
           <span className="section-label">// Projects</span>
           <h2 className="section-title">Selected <span className="grad-text">Work</span></h2>
         </motion.div>
@@ -375,30 +454,32 @@ export default function Projects() {
           {PROJECTS.map((proj,idx)=>{
             const isOpen=open===proj.id
             return(
-              <motion.div key={proj.id} initial={{opacity:0,x:-30}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.6,delay:idx*0.08}} style={{borderRadius:16,border:'1px solid '+(isOpen?'rgba(139,92,246,0.6)':'var(--border)'),background:'var(--surface)',overflow:'hidden',transition:'border-color .3s'}}>
-                <div style={{display:'flex',alignItems:'center',gap:24,padding:'28px 32px'}}>
-                  <span style={{fontFamily:'monospace',fontSize:11,letterSpacing:3,color:'var(--muted)',minWidth:36}}>{proj.id}</span>
-                  <h3 style={{flex:1,fontSize:18,fontWeight:600,fontFamily:'Orbitron,sans-serif',color:isOpen?'var(--violet)':'var(--text)',transition:'color .3s'}}>{proj.title}</h3>
-                  <div style={{display:'flex',gap:8,marginRight:16}}>
-                    {proj.tags.slice(0,2).map((tag: string)=><span key={tag} style={{fontFamily:'monospace',fontSize:10,padding:'4px 12px',borderRadius:100,background:'rgba(139,92,246,0.08)',border:'1px solid rgba(139,92,246,0.2)',color:'var(--violet)'}}>{tag}</span>)}
+              <motion.div key={proj.id} initial={{opacity:0,x:-30}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.6,delay:idx*0.08}}
+                style={{borderRadius:14,border:'1px solid '+(isOpen?'rgba(139,92,246,0.6)':'var(--border)'),background:'var(--surface)',overflow:'hidden',transition:'border-color .3s,background .4s'}}>
+                <div style={{display:'flex',alignItems:'center',gap:'clamp(12px,3vw,24px)',padding:'clamp(16px,3vw,24px) clamp(16px,3vw,28px)'}}>
+                  <span style={{fontFamily:'monospace',fontSize:11,letterSpacing:3,color:'var(--muted)',minWidth:32,flexShrink:0}}>{proj.id}</span>
+                  <h3 style={{flex:1,fontSize:'clamp(13px,2.5vw,17px)',fontWeight:600,fontFamily:'Orbitron,sans-serif',color:isOpen?'var(--violet)':'var(--text)',transition:'color .3s'}}>{proj.title}</h3>
+                  <div className="desktop-only" style={{display:'flex',gap:8}}>
+                    {proj.tags.slice(0,2).map((tag:string)=><span key={tag} style={{fontFamily:'monospace',fontSize:9,padding:'4px 10px',borderRadius:100,background:'rgba(139,92,246,0.08)',border:'1px solid rgba(139,92,246,0.2)',color:'var(--violet)'}}>{tag}</span>)}
                   </div>
-                  <button onClick={()=>setOpen((p: string|null)=>p===proj.id?null:proj.id)} style={{width:44,height:44,borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid '+(isOpen?'var(--violet)':'var(--border)'),background:isOpen?'var(--violet)':'transparent',cursor:'pointer',transition:'all .3s',flexShrink:0}}>
-                    <span style={{fontSize:18,transform:isOpen?'rotate(135deg)':'rotate(0)',transition:'transform .3s',color:isOpen?'white':'var(--muted)'}}>&#8599;</span>
+                  <button onClick={()=>setOpen((p:string|null)=>p===proj.id?null:proj.id)}
+                    style={{width:40,height:40,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid '+(isOpen?'var(--violet)':'var(--border)'),background:isOpen?'var(--violet)':'transparent',cursor:'pointer',transition:'all .3s',flexShrink:0}}>
+                    <span style={{fontSize:16,transform:isOpen?'rotate(135deg)':'rotate(0)',transition:'transform .3s',color:isOpen?'white':'var(--muted)'}}>&#8599;</span>
                   </button>
                 </div>
                 <AnimatePresence initial={false}>
                   {isOpen&&(
                     <motion.div key="d" initial={{height:0,opacity:0}} animate={{height:'auto',opacity:1}} exit={{height:0,opacity:0}} transition={{duration:0.4}} style={{overflow:'hidden'}}>
-                      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:32,padding:'8px 32px 32px 116px'}}>
-                        <p style={{color:'var(--muted)',fontSize:15,lineHeight:1.8}}>{proj.desc}</p>
-                        <div style={{display:'flex',flexDirection:'column',gap:12}}>
+                      <div className="two-col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:24,padding:'8px clamp(16px,3vw,28px) 28px clamp(60px,6vw,100px)'}}>
+                        <p style={{color:'var(--muted)',fontSize:'clamp(13px,2vw,15px)',lineHeight:1.8}}>{proj.desc}</p>
+                        <div style={{display:'flex',flexDirection:'column',gap:10}}>
                           {[{l:'Stack',v:proj.tags.join(' · ')},{l:'Domain',v:proj.domain},{l:'Year',v:proj.year}].map(({l,v})=>(
-                            <div key={l} style={{display:'flex',gap:12,alignItems:'center'}}>
-                              <span style={{fontFamily:'monospace',fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)',minWidth:55}}>{l}</span>
-                              <span style={{fontSize:13,fontWeight:700,color:'var(--text)'}}>{v}</span>
+                            <div key={l} style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}>
+                              <span style={{fontFamily:'monospace',fontSize:9,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)',minWidth:48}}>{l}</span>
+                              <span style={{fontSize:12,fontWeight:700,color:'var(--text)'}}>{v}</span>
                             </div>
                           ))}
-                          <a href={proj.link} target="_blank" rel="noreferrer" style={{marginTop:8,fontWeight:700,fontSize:12,letterSpacing:2,textTransform:'uppercase',color:'var(--cyan)',textDecoration:'none'}}>
+                          <a href={proj.link} target="_blank" rel="noreferrer" style={{marginTop:8,fontWeight:700,fontSize:11,letterSpacing:2,textTransform:'uppercase',color:'var(--cyan)',textDecoration:'none'}}>
                             {proj.id==='06'?'Read Publication':'View on GitHub'} →
                           </a>
                         </div>
@@ -416,6 +497,7 @@ export default function Projects() {
 }
 `)
 
+// ── Skills ────────────────────────────────────────────────────────────────────
 write('components/sections/Skills.tsx', `'use client'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
@@ -424,18 +506,21 @@ export default function Skills() {
   const ref=useRef(null)
   const inView=useInView(ref,{once:true,margin:'-100px'})
   return(
-    <section id="skills" style={{padding:'144px 0',position:'relative',background:'var(--bg2)'}}>
+    <section id="skills" className="section-pad" style={{padding:'120px 0',position:'relative',background:'var(--bg2)',transition:'background .4s'}}>
       <div className="grid-bg"/>
-      <div ref={ref} style={{maxWidth:1152,margin:'0 auto',padding:'0 64px'}}>
-        <motion.div initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.8}} style={{marginBottom:64}}>
+      <div ref={ref} style={{maxWidth:1100,margin:'0 auto',padding:'0 clamp(20px,5vw,64px)'}}>
+        <motion.div initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.8}} style={{marginBottom:48}}>
           <span className="section-label">// Toolkit</span>
           <h2 className="section-title">Technical <span className="grad-text">Skills</span></h2>
         </motion.div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(6,1fr)',gap:14}}>
-          {SKILLS.map((sk: {icon:string,name:string},i: number)=>(
-            <motion.div key={sk.name} initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.5,delay:i*0.04}} whileHover={{y:-6}} style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,display:'flex',flexDirection:'column',alignItems:'center',gap:12,padding:'20px 12px',transition:'border-color .3s'}} onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.borderColor='rgba(139,92,246,0.6)'}} onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.borderColor='var(--border)'}}>
-              <span style={{fontSize:30}}>{sk.icon}</span>
-              <span style={{fontSize:11,fontWeight:700,color:'var(--muted)',textAlign:'center'}}>{sk.name}</span>
+        <div className="skills-grid" style={{display:'grid',gridTemplateColumns:'repeat(6,1fr)',gap:10}}>
+          {SKILLS.map((sk:{icon:string,name:string},i:number)=>(
+            <motion.div key={sk.name} initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.5,delay:i*0.04}} whileHover={{y:-5}}
+              style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,display:'flex',flexDirection:'column',alignItems:'center',gap:10,padding:'16px 8px',transition:'border-color .3s,background .4s'}}
+              onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.borderColor='rgba(139,92,246,0.6)'}}
+              onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.borderColor='var(--border)'}}>
+              <span style={{fontSize:26}}>{sk.icon}</span>
+              <span style={{fontSize:10,fontWeight:700,color:'var(--muted)',textAlign:'center'}}>{sk.name}</span>
             </motion.div>
           ))}
         </div>
@@ -445,6 +530,7 @@ export default function Skills() {
 }
 `)
 
+// ── Experience ────────────────────────────────────────────────────────────────
 write('components/sections/Experience.tsx', `'use client'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
@@ -453,26 +539,27 @@ export default function Experience() {
   const ref=useRef(null)
   const inView=useInView(ref,{once:true,margin:'-100px'})
   return(
-    <section id="experience" style={{padding:'144px 0',position:'relative',background:'var(--bg)'}}>
-      <div ref={ref} style={{maxWidth:1152,margin:'0 auto',padding:'0 64px'}}>
-        <motion.div initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.8}} style={{marginBottom:64}}>
+    <section id="experience" className="section-pad" style={{padding:'120px 0',position:'relative',background:'var(--bg)',transition:'background .4s'}}>
+      <div ref={ref} style={{maxWidth:1100,margin:'0 auto',padding:'0 clamp(20px,5vw,64px)'}}>
+        <motion.div initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.8}} style={{marginBottom:48}}>
           <span className="section-label">// Career</span>
           <h2 className="section-title">Professional <span className="grad-text">Journey</span></h2>
         </motion.div>
-        <div style={{position:'relative',paddingLeft:40}}>
-          <motion.div initial={{scaleY:0}} animate={inView?{scaleY:1}:{}} transition={{duration:1.5,ease:'easeOut',delay:0.3}} style={{position:'absolute',left:0,top:0,bottom:0,width:1,background:'linear-gradient(to bottom,var(--violet),var(--cyan),transparent)',transformOrigin:'top'}}/>
-          <div style={{display:'flex',flexDirection:'column',gap:48}}>
-            {EXPERIENCE.map((exp: any,i: number)=>(
+        <div style={{position:'relative',paddingLeft:'clamp(24px,5vw,40px)'}}>
+          <motion.div initial={{scaleY:0}} animate={inView?{scaleY:1}:{}} transition={{duration:1.5,ease:'easeOut',delay:0.3}}
+            style={{position:'absolute',left:0,top:0,bottom:0,width:1,background:'linear-gradient(to bottom,var(--violet),var(--cyan),transparent)',transformOrigin:'top'}}/>
+          <div style={{display:'flex',flexDirection:'column',gap:32}}>
+            {EXPERIENCE.map((exp:any,i:number)=>(
               <motion.div key={exp.role} initial={{opacity:0,x:-30}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.7,delay:0.3+i*0.2}} style={{position:'relative'}}>
-                <div style={{position:'absolute',left:-46,top:8,width:12,height:12,borderRadius:'50%',background:exp.color,boxShadow:'0 0 20px '+exp.color}}/>
-                <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:32}}>
-                  <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:16,flexWrap:'wrap',marginBottom:8}}>
-                    <h3 style={{fontSize:18,fontWeight:600,fontFamily:'Orbitron,sans-serif'}}>{exp.role}</h3>
-                    <span style={{fontFamily:'monospace',fontSize:10,letterSpacing:2,padding:'4px 12px',borderRadius:100,background:'rgba(6,182,212,0.08)',border:'1px solid rgba(6,182,212,0.2)',color:'var(--cyan)'}}>{exp.date}</span>
+                <div style={{position:'absolute',left:'clamp(-34px,-5vw,-40px)',top:8,width:12,height:12,borderRadius:'50%',background:exp.color,boxShadow:'0 0 16px '+exp.color}}/>
+                <div style={{background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:'clamp(20px,3vw,28px)',transition:'background .4s'}}>
+                  <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:12,flexWrap:'wrap',marginBottom:6}}>
+                    <h3 style={{fontSize:'clamp(15px,2.5vw,18px)',fontWeight:600,fontFamily:'Orbitron,sans-serif'}}>{exp.role}</h3>
+                    <span style={{fontFamily:'monospace',fontSize:10,letterSpacing:2,padding:'4px 12px',borderRadius:100,background:'rgba(6,182,212,0.08)',border:'1px solid rgba(6,182,212,0.2)',color:'var(--cyan)',whiteSpace:'nowrap'}}>{exp.date}</span>
                   </div>
-                  <p style={{fontSize:14,fontWeight:700,color:exp.color,marginBottom:16}}>{exp.company}</p>
-                  <ul style={{display:'flex',flexDirection:'column',gap:8,listStyle:'none'}}>
-                    {exp.points.map((pt: string)=><li key={pt} style={{fontSize:14,paddingLeft:16,position:'relative',color:'var(--muted)',lineHeight:1.7}}><span style={{position:'absolute',left:0,color:'var(--violet)'}}>&#9657;</span>{pt}</li>)}
+                  <p style={{fontSize:13,fontWeight:700,color:exp.color,marginBottom:12}}>{exp.company}</p>
+                  <ul style={{display:'flex',flexDirection:'column',gap:6,listStyle:'none'}}>
+                    {exp.points.map((pt:string)=><li key={pt} style={{fontSize:'clamp(12px,2vw,14px)',paddingLeft:16,position:'relative',color:'var(--muted)',lineHeight:1.7}}><span style={{position:'absolute',left:0,color:'var(--violet)'}}>&#9657;</span>{pt}</li>)}
                   </ul>
                 </div>
               </motion.div>
@@ -485,6 +572,7 @@ export default function Experience() {
 }
 `)
 
+// ── Contact ───────────────────────────────────────────────────────────────────
 write('components/sections/Contact.tsx', `'use client'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
@@ -492,40 +580,44 @@ const contacts=[{icon:'📧',label:'Email',val:'krithikraj@email.com',href:'mail
 export default function Contact() {
   const ref=useRef(null)
   const inView=useInView(ref,{once:true,margin:'-100px'})
-  const inp: React.CSSProperties={background:'rgba(255,255,255,0.03)',border:'1px solid var(--border)',borderRadius:10,padding:'12px 16px',color:'var(--text)',fontSize:14,outline:'none',width:'100%'}
+  const inp:React.CSSProperties={background:'rgba(255,255,255,0.03)',border:'1px solid var(--border)',borderRadius:10,padding:'12px 14px',color:'var(--text)',fontSize:14,outline:'none',width:'100%',transition:'border-color .3s,background .4s'}
   return(
-    <section id="contact" style={{padding:'144px 0',position:'relative',background:'var(--bg2)'}}>
+    <section id="contact" className="section-pad" style={{padding:'120px 0',position:'relative',background:'var(--bg2)',transition:'background .4s'}}>
       <div className="grid-bg"/>
-      <div ref={ref} style={{maxWidth:1152,margin:'0 auto',padding:'0 64px'}}>
-        <motion.div initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.8}} style={{marginBottom:64}}>
+      <div ref={ref} style={{maxWidth:1100,margin:'0 auto',padding:'0 clamp(20px,5vw,64px)'}}>
+        <motion.div initial={{opacity:0,y:30}} animate={inView?{opacity:1,y:0}:{}} transition={{duration:0.8}} style={{marginBottom:48}}>
           <span className="section-label">// Contact</span>
           <h2 className="section-title">Build Something <span className="grad-text">Amazing</span></h2>
         </motion.div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:80}}>
+        <div className="two-col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'clamp(32px,6vw,80px)'}}>
           <motion.div initial={{opacity:0,x:-30}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.8}}>
-            <p style={{color:'var(--muted)',fontSize:16,lineHeight:1.9,marginBottom:32}}>Seeking roles in <strong style={{color:'var(--text)'}}>robotics, automation and AI/ML</strong>. Open to global collaborations.</p>
-            <div style={{display:'flex',flexDirection:'column',gap:16}}>
+            <p style={{color:'var(--muted)',fontSize:'clamp(13px,2vw,16px)',lineHeight:1.9,marginBottom:28}}>Seeking roles in <strong style={{color:'var(--text)'}}>robotics, automation and AI/ML</strong>. Open to global collaborations.</p>
+            <div style={{display:'flex',flexDirection:'column',gap:12}}>
               {contacts.map(({icon,label,val,href})=>(
-                <a key={label} href={href} target={href.startsWith('http')?'_blank':undefined} rel="noreferrer" style={{display:'flex',alignItems:'center',gap:20,background:'var(--surface)',border:'1px solid var(--border)',borderRadius:16,padding:'20px 24px',textDecoration:'none'}}>
-                  <div style={{width:44,height:44,borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,background:'rgba(139,92,246,0.1)',border:'1px solid var(--border)'}}>{icon}</div>
+                <a key={label} href={href} target={href.startsWith('http')?'_blank':undefined} rel="noreferrer"
+                  style={{display:'flex',alignItems:'center',gap:16,background:'var(--surface)',border:'1px solid var(--border)',borderRadius:14,padding:'16px 20px',textDecoration:'none',transition:'border-color .3s,background .4s'}}
+                  onMouseEnter={e=>{(e.currentTarget as HTMLAnchorElement).style.borderColor='rgba(139,92,246,0.5)'}}
+                  onMouseLeave={e=>{(e.currentTarget as HTMLAnchorElement).style.borderColor='var(--border)'}}>
+                  <div style={{width:40,height:40,borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,background:'rgba(139,92,246,0.1)',border:'1px solid var(--border)',flexShrink:0}}>{icon}</div>
                   <div>
-                    <div style={{fontFamily:'monospace',fontSize:10,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)',marginBottom:4}}>{label}</div>
-                    <div style={{fontSize:14,fontWeight:700,color:'var(--text)'}}>{val}</div>
+                    <div style={{fontFamily:'monospace',fontSize:9,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)',marginBottom:3}}>{label}</div>
+                    <div style={{fontSize:13,fontWeight:700,color:'var(--text)'}}>{val}</div>
                   </div>
                 </a>
               ))}
             </div>
           </motion.div>
-          <motion.div initial={{opacity:0,x:30}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.8,delay:0.2}} style={{display:'flex',flexDirection:'column',gap:16}}>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
+          <motion.div initial={{opacity:0,x:30}} animate={inView?{opacity:1,x:0}:{}} transition={{duration:0.8,delay:0.2}} style={{display:'flex',flexDirection:'column',gap:12}}>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
               <input style={inp} placeholder="Full Name *"/>
               <input style={inp} placeholder="Email *" type="email"/>
             </div>
             <input style={inp} placeholder="Company / Organisation"/>
             <select style={{...inp,background:'var(--bg2)'}}><option>Subject *</option><option>Job Opportunity</option><option>Collaboration</option><option>Technical Consultation</option></select>
-            <textarea style={{...inp,minHeight:130,resize:'vertical'}} placeholder="Your Message *" rows={5}/>
-            <motion.button whileHover={{opacity:0.85,y:-2}} whileTap={{scale:0.98}} style={{padding:'16px',background:'linear-gradient(135deg,var(--violet),var(--cyan))',border:'none',borderRadius:10,color:'white',fontWeight:800,fontSize:13,letterSpacing:2,textTransform:'uppercase',cursor:'pointer',width:'100%'}}>
-              Send Message
+            <textarea style={{...inp,minHeight:120,resize:'vertical'}} placeholder="Your Message *" rows={5}/>
+            <motion.button whileHover={{opacity:0.85,y:-2}} whileTap={{scale:0.98}}
+              style={{padding:'14px',background:'linear-gradient(135deg,var(--violet),var(--cyan))',border:'none',borderRadius:10,color:'white',fontWeight:800,fontSize:12,letterSpacing:2,textTransform:'uppercase',cursor:'pointer',width:'100%'}}>
+              Send Message ✦
             </motion.button>
           </motion.div>
         </div>
@@ -535,7 +627,9 @@ export default function Contact() {
 }
 `)
 
+// ── page.tsx — with theme state ───────────────────────────────────────────────
 write('app/page.tsx', `'use client'
+import { useState, useEffect } from 'react'
 import Cursor from '../components/ui/Cursor'
 import Navbar from '../components/ui/Navbar'
 import Hero from '../components/sections/Hero'
@@ -544,12 +638,28 @@ import Projects from '../components/sections/Projects'
 import Skills from '../components/sections/Skills'
 import Experience from '../components/sections/Experience'
 import Contact from '../components/sections/Contact'
+
 export default function Home() {
+  const [theme, setTheme] = useState('dark')
+
+  useEffect(() => {
+    const saved = localStorage.getItem('theme') || 'dark'
+    setTheme(saved)
+    document.documentElement.setAttribute('data-theme', saved)
+  }, [])
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    setTheme(next)
+    document.documentElement.setAttribute('data-theme', next)
+    localStorage.setItem('theme', next)
+  }
+
   return (
     <>
       <div className="noise"/>
       <Cursor/>
-      <Navbar/>
+      <Navbar theme={theme} toggleTheme={toggleTheme}/>
       <main>
         <Hero/>
         <About/>
@@ -558,12 +668,17 @@ export default function Home() {
         <Experience/>
         <Contact/>
       </main>
-      <footer style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:16,padding:'36px 64px',background:'var(--bg)',borderTop:'1px solid var(--border)'}}>
-        <span style={{fontFamily:'Orbitron,sans-serif',fontWeight:900,fontSize:18,background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',letterSpacing:4}}>KRITHIK RAJ</span>
-        <p style={{fontSize:14,color:'var(--muted)'}}>2026 · Robotics Engineer · Next.js + Three.js</p>
-        <div style={{display:'flex',gap:12}}>
+      <footer style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:16,padding:'clamp(20px,4vw,36px) clamp(20px,5vw,64px)',background:'var(--bg)',borderTop:'1px solid var(--border)',transition:'background .4s'}}>
+        <span style={{fontFamily:'Orbitron,sans-serif',fontWeight:900,fontSize:'clamp(14px,2vw,18px)',background:'linear-gradient(135deg,var(--violet),var(--cyan))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',letterSpacing:4}}>KRITHIK RAJ</span>
+        <p style={{fontSize:13,color:'var(--muted)'}}>2026 · Robotics Engineer · Next.js + Three.js</p>
+        <div style={{display:'flex',gap:10}}>
           {[{l:'in',h:'https://linkedin.com/in/krithikraj'},{l:'gh',h:'https://github.com/KrithikRajofficial'},{l:'@',h:'mailto:krithikraj@email.com'}].map(({l,h})=>(
-            <a key={l} href={h} target={h.startsWith('http')?'_blank':undefined} rel="noreferrer" style={{width:36,height:36,display:'flex',alignItems:'center',justifyContent:'center',borderRadius:10,border:'1px solid var(--border)',fontSize:12,fontWeight:700,color:'var(--muted)',textDecoration:'none'}}>{l}</a>
+            <a key={l} href={h} target={h.startsWith('http')?'_blank':undefined} rel="noreferrer"
+              style={{width:36,height:36,display:'flex',alignItems:'center',justifyContent:'center',borderRadius:10,border:'1px solid var(--border)',fontSize:12,fontWeight:700,color:'var(--muted)',textDecoration:'none',transition:'all .3s'}}
+              onMouseEnter={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.borderColor='var(--violet)';el.style.color='var(--violet)'}}
+              onMouseLeave={e=>{const el=e.currentTarget as HTMLAnchorElement;el.style.borderColor='var(--border)';el.style.color='var(--muted)'}}>
+              {l}
+            </a>
           ))}
         </div>
       </footer>
@@ -572,5 +687,5 @@ export default function Home() {
 }
 `)
 
-console.log('\n✅ ALL FILES WRITTEN SUCCESSFULLY!')
-console.log('Now run: npm run dev')
+console.log('\n✅ ALL FILES WRITTEN!')
+console.log('Run: npm run dev')
