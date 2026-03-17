@@ -21,7 +21,7 @@ function IDCard() {
           <span style={{fontFamily:'monospace',fontSize:9,letterSpacing:2,textTransform:'uppercase',color:'var(--muted)'}}>Research // Engineer</span>
         </div>
         <div style={{display:'flex',gap:20,alignItems:'flex-start',padding:'28px 28px 0'}}>
-          <div style={{width:88,height:88,borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',fontSize:36,background:'linear-gradient(135deg,rgba(139,92,246,0.3),rgba(6,182,212,0.3))',border:'1px solid rgba(139,92,246,0.4)'}}>🤖</div>
+          <img src='/assets/images/profile.jpg' alt='Krithik Raj' style={{width:88,height:88,borderRadius:16,objectFit:'cover',objectPosition:'center top',border:'2px solid rgba(139,92,246,0.4)'}}/>
           <div>
             <h3 style={{fontSize:18,fontWeight:700,marginBottom:4,fontFamily:'Orbitron,sans-serif'}}>Krithik Raj</h3>
             <p style={{fontFamily:'monospace',fontSize:11,color:'var(--cyan)',letterSpacing:1,marginBottom:10}}>ROBOTICS_ENG.v2</p>
